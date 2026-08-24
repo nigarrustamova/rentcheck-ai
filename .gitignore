@@ -1,0 +1,43 @@
+# Data and model artefacts — never committed
+data/raw/
+data/processed/
+data/interim/
+*.pt
+*.pth
+*.onnx
+runs/
+checkpoints/
+wandb/
+
+# Keep split definitions (filename lists) — they are small and must be reproducible
+!data/splits/
+!data/splits/*.txt
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+.ipynb_checkpoints/
+
+# Environments and secrets
+.env
+kaggle.json
+
+# LaTeX build artefacts
+report/*.aux
+report/*.log
+report/*.out
+report/*.bbl
+report/*.blg
+report/*.synctex.gz
+report/*.fdb_latexmk
+report/*.fls
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
