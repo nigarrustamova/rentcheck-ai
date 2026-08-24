@@ -11,12 +11,17 @@ instead of guesswork.
 
 ## Team
 
+Listed alphabetically by surname, matching the author order used in the paper.
+
 | Name | Role / module |
 |---|---|
-| Rustamova, Nigar | TBD |
-| TBD | TBD |
-| TBD | TBD |
-| TBD | TBD |
+| Aliyev, Orkhan | Baseline model, evaluation, ablation study |
+| Mirzayeva, Laman | Web UI, PDF report generation, slide deck |
+| Rustamova, Nigar | Data pipeline, splits, augmentation, training runs |
+| Samadov, Nijat | FastAPI service, check-out/check-in diff logic, Docker |
+
+Work is divided by module, but every member is expected to be able to explain
+any part of the system at the defense.
 
 ## Status
 
