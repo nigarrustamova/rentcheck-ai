@@ -58,6 +58,13 @@ classes, bounding-box + pixel-level annotations):
 kaggle datasets download -d nasimetemadi/car-damage-detection -p data/raw/kaggle --unzip
 ```
 
+Before anything else, inspect whatever you have just downloaded — image count,
+annotation format, class balance, resolution, and unreadable files:
+
+```bash
+python src/data/check_dataset.py --root data/raw/cardd
+```
+
 Then convert the COCO annotations to YOLO format and build the fixed split:
 
 ```bash
