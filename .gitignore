@@ -13,6 +13,12 @@ wandb/
 !data/splits/
 !data/splits/*.txt
 
+# Rendered CarDD images. The CarDD licence forbids redistributing the dataset,
+# and this repository is public — figures for the paper go into the PDF, not here.
+report/figures/label_check/
+report/figures/**/*.jpg
+report/figures/**/*.png
+
 # Python
 __pycache__/
 *.py[cod]
