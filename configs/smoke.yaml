@@ -1,0 +1,42 @@
+# Pipeline smoke test: can the code learn anything at all?
+#
+# Twenty images, validated on those same twenty. Augmentation is switched off
+# entirely — the goal is memorisation, and augmentation actively fights that.
+# Success is mAP50 climbing above ~0.9. If it does not, the bug is in the data
+# conversion or the training loop, not in the model, and it must be found before
+# the booked GPU window is spent.
+#
+# This config never produces a reportable number.
+
+model: weights/yolov8n.pt
+data: data/processed/smoke_det/dataset.yaml
+task: detect
+
+epochs: 100
+imgsz: 320
+batch: 4
+device: cpu
+workers: 0
+patience: 0          # no early stopping — we want the full curve
+seed: 42
+
+# Augmentation off.
+mosaic: 0.0
+mixup: 0.0
+copy_paste: 0.0
+erasing: 0.0
+hsv_h: 0.0
+hsv_s: 0.0
+hsv_v: 0.0
+degrees: 0.0
+translate: 0.0
+scale: 0.0
+shear: 0.0
+perspective: 0.0
+flipud: 0.0
+fliplr: 0.0
+
+val: true
+plots: true
+project: runs
+name: smoke

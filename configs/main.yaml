@@ -1,0 +1,45 @@
+# Main model: YOLOv8s instance segmentation, fine-tuned from COCO weights.
+#
+# Segmentation rather than plain detection because the product needs the damage
+# *area*, not just its rough location — a box drawn round a long diagonal scratch
+# is mostly empty space, which would badly overstate the severity in the report.
+#
+# Written for the A100 window. Locally, override with --device cpu (and expect it
+# to be far too slow for a real run).
+
+model: weights/yolov8s-seg.pt
+data: data/processed/cardd_seg/dataset.yaml
+task: segment
+
+epochs: 100
+imgsz: 640
+batch: 16              # ~9-10 GB on the A100, inside the 10-12 GB budget
+device: 0
+workers: 8
+amp: true
+patience: 20           # stop if validation mAP has not moved in 20 epochs
+save_period: 5         # the booked window can end mid-training; keep resume points
+seed: 42
+
+# Augmentation tuned for the deployment reality: rental staff photograph cars
+# handheld, at varying distance, in whatever light the forecourt has.
+hsv_h: 0.015           # slight colour shift
+hsv_s: 0.7             # saturation — sun versus overcast
+hsv_v: 0.4             # brightness — the big one for outdoor photos
+degrees: 10.0          # handheld tilt
+translate: 0.1         # the car is not always centred
+scale: 0.5             # distance from the vehicle varies
+perspective: 0.0005    # viewing angle differs between check-out and check-in
+fliplr: 0.5            # a car shot from the left mirrors one shot from the right
+flipud: 0.0            # cars are never upside down
+shear: 0.0
+mosaic: 1.0
+close_mosaic: 10       # last 10 epochs without mosaic, so training ends on real images
+mixup: 0.0             # blends whole images; unhelpful for small, localised damage
+copy_paste: 0.0
+erasing: 0.0
+
+val: true
+plots: true
+project: runs
+name: main_seg

@@ -1,0 +1,43 @@
+# Ablation: main.yaml with augmentation switched off.
+#
+# The question this answers is a product question, not only a training one. Rental
+# photos arrive handheld, at odd angles, in whatever light there is. If augmentation
+# is what makes the model survive that, the ablation shows it; if it barely matters,
+# that is worth knowing too and we report it either way.
+#
+# Everything except the augmentation block is identical to main.yaml.
+
+model: weights/yolov8s-seg.pt
+data: data/processed/cardd_seg/dataset.yaml
+task: segment
+
+epochs: 100
+imgsz: 640
+batch: 16
+device: 0
+workers: 8
+amp: true
+patience: 20
+save_period: 5
+seed: 42
+
+# Augmentation off.
+hsv_h: 0.0
+hsv_s: 0.0
+hsv_v: 0.0
+degrees: 0.0
+translate: 0.0
+scale: 0.0
+perspective: 0.0
+fliplr: 0.0
+flipud: 0.0
+shear: 0.0
+mosaic: 0.0
+mixup: 0.0
+copy_paste: 0.0
+erasing: 0.0
+
+val: true
+plots: true
+project: runs
+name: ablation_noaug

@@ -1,0 +1,35 @@
+# Same smoke test as smoke.yaml, but for the segmentation head — the polygons take
+# a different code path from the boxes, so passing one says nothing about the other.
+# Runs on CPU in a few minutes; never produces a reportable number.
+
+model: weights/yolov8s-seg.pt
+data: data/processed/smoke_seg/dataset.yaml
+task: segment
+
+epochs: 40
+imgsz: 320
+batch: 4
+device: cpu
+workers: 0
+patience: 0
+seed: 42
+
+mosaic: 0.0
+mixup: 0.0
+copy_paste: 0.0
+erasing: 0.0
+hsv_h: 0.0
+hsv_s: 0.0
+hsv_v: 0.0
+degrees: 0.0
+translate: 0.0
+scale: 0.0
+shear: 0.0
+perspective: 0.0
+flipud: 0.0
+fliplr: 0.0
+
+val: true
+plots: true
+project: runs
+name: smoke_seg
