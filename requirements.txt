@@ -1,29 +1,34 @@
-# Initial pins. After the environment is working, regenerate with `pip freeze`
-# so the submitted versions match exactly what was used for the final run.
+# Exact versions of the environment the results were produced in.
+# Python 3.14 on Windows (local development) and Linux (A100 workstation).
+# The full resolved tree, including transitive dependencies, is in
+# requirements.lock.txt — regenerate both with pip freeze after any change.
+#
+# Note: on Windows these torch wheels are CPU-only, which is what the Docker
+# image needs anyway; on Linux the same pins pull the CUDA build.
 
 # Deep learning
-torch==2.4.1
-torchvision==0.19.1
-ultralytics==8.3.0
+torch==2.13.0
+torchvision==0.28.0
+ultralytics==8.4.128
 
 # Data / vision
-numpy==1.26.4
-opencv-python-headless==4.10.0.84
-pillow==10.4.0
-pycocotools==2.0.8
-pyyaml==6.0.2
+numpy==2.5.2
+opencv-python-headless==5.0.0.93
+pillow==12.3.0
+pycocotools==2.0.11
+pyyaml==6.0.3
 
 # Analysis and figures
-pandas==2.2.2
-matplotlib==3.9.2
+pandas==3.0.5
+matplotlib==3.11.1
 
 # API and demo
-fastapi==0.115.0
-uvicorn==0.30.6
-python-multipart==0.0.9
+fastapi==0.141.1
+uvicorn==0.52.4
+python-multipart==0.0.32
 
 # Report generation
-reportlab==4.2.2
+reportlab==5.0.1
 
 # Utilities
-tqdm==4.66.5
+tqdm==4.70.0

@@ -25,11 +25,16 @@ any part of the system at the defense.
 
 ## Status
 
-Scaffold only — data pipeline, training, and API are not implemented yet.
+Data pipeline works: CarDD converts to YOLO detection and segmentation layouts,
+and the converted labels have been checked against the images. Training, the
+check-in/check-out diff, and the API are not implemented yet.
 
 ---
 
 ## 1. Setup
+
+Python 3.14. The pins also resolve on 3.12, which is what Ubuntu 24.04 ships,
+so the same requirements file works on the training workstation.
 
 ```bash
 python -m venv .venv
