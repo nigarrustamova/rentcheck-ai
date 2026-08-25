@@ -86,6 +86,11 @@ def main():
     project = Path(config["project"])
     config["project"] = str(project if project.is_absolute() else REPO_ROOT / project)
 
+    # Relative paths in a config mean "relative to the repository", not to whatever
+    # directory the command happened to be launched from.
+    data = Path(config["data"])
+    config["data"] = str(data if data.is_absolute() else REPO_ROOT / data)
+
     if args.resume:
         # The booked GPU window can end mid-training, so picking a run back up has
         # to be one flag, not a hand-edited config.
