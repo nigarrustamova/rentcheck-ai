@@ -18,7 +18,7 @@ device: 0
 workers: 8
 amp: true
 patience: 20
-save_period: 5
+save_period: 25
 seed: 42
 
 hsv_h: 0.015

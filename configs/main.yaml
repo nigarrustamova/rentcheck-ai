@@ -18,7 +18,8 @@ device: 0
 workers: 8
 amp: true
 patience: 20           # stop if validation mAP has not moved in 20 epochs
-save_period: 5         # the booked window can end mid-training; keep resume points
+save_period: 25        # last.pt is written every epoch and is the real safety net;
+                       # these extra copies are 95 MB each and filled the Drive quota
 seed: 42
 
 # Augmentation tuned for the deployment reality: rental staff photograph cars
