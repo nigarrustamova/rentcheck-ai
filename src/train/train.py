@@ -45,6 +45,21 @@ def set_seeds(seed):
     torch.manual_seed(seed)
 
 
+def is_resumable(checkpoint):
+    """Whether a checkpoint still carries the state needed to continue training.
+
+    A finished run is saved without its optimizer, so the file is fine for
+    inference but cannot be continued. Telling the two apart before handing the
+    path to Ultralytics is the difference between resuming and silently
+    retraining over a model that was already done.
+    """
+    try:
+        state = torch.load(checkpoint, map_location="cpu", weights_only=False)
+    except Exception:
+        return False
+    return bool(state.get("optimizer")) and state.get("epoch", -1) not in (None, -1)
+
+
 def load_config(path):
     with open(path, encoding="utf-8") as fh:
         config = yaml.safe_load(fh)
@@ -97,6 +112,19 @@ def main():
         last = Path(config["project"]) / config["name"] / "weights" / "last.pt"
         if not last.exists():
             raise SystemExit(f"Nothing to resume from: {last}")
+        if not is_resumable(last):
+            # Ultralytics strips the optimizer out of the weights once a run
+            # finishes. Asked to resume such a file it prints a warning and quietly
+            # starts a *new* run instead, which re-warms the learning rate and
+            # overwrites the finished model with a worse one. Stop rather than let
+            # that happen unattended.
+            raise SystemExit(
+                f"\n{last}\ncarries no optimizer state, which means that run already "
+                "finished.\nResuming it would silently start a fresh run over the "
+                "trained weights and overwrite them.\n\nEvaluate the existing "
+                "checkpoints instead, or train something else under a different "
+                "'name' in the config.\n"
+            )
         config["model"] = str(last)
         config["resume"] = True
         print(f"  resuming from {last}")
