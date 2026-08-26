@@ -86,6 +86,20 @@ def as_markdown(rows):
     return "\n".join(lines)
 
 
+def run_name(weights):
+    """Name the experiment a checkpoint belongs to.
+
+    Ultralytics writes runs/<experiment>/weights/best.pt, so for those the folder
+    two levels up is the name. Once a model has been copied somewhere safer —
+    models/step0_baseline.pt — that folder means nothing, and the filename is what
+    identifies it. Getting this wrong is quiet and expensive: every experiment would
+    write its results over the same file.
+    """
+    if weights.parent.name == "weights":
+        return weights.parent.parent.name
+    return weights.stem
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--weights", required=True, type=Path)
@@ -98,6 +112,8 @@ def main():
     ap.add_argument("--batch", type=int, default=16)
     ap.add_argument("--device", default="cpu")
     ap.add_argument("--out", type=Path, default=REPO_ROOT / "report" / "results")
+    ap.add_argument("--name", default=None,
+                    help="override the experiment name used for the output files")
     args = ap.parse_args()
 
     if args.split == "test" and not args.confirm_test:
@@ -124,7 +140,7 @@ def main():
     rows = collect_rows(metrics, model.names)
 
     args.out.mkdir(parents=True, exist_ok=True)
-    stem = f"{args.weights.parent.parent.name}_{args.split}"
+    stem = f"{args.name or run_name(args.weights)}_{args.split}"
 
     csv_path = args.out / f"{stem}.csv"
     with open(csv_path, "w", newline="", encoding="utf-8") as fh:
