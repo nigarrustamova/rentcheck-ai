@@ -1,0 +1,40 @@
+# Architecture study: the newest generation shipped with this Ultralytics release.
+#
+# Worth measuring rather than assuming: on 2,816 training images the gap between
+# architecture generations is often inside run-to-run noise, and reporting that
+# honestly is more useful than claiming an improvement that is not there.
+
+model: weights/yolo26s-seg.pt
+data: data/processed/cardd_seg/dataset.yaml
+task: segment
+
+imgsz: 640
+batch: 16
+epochs: 100
+device: 0
+workers: 8
+amp: true
+patience: 20
+save_period: 5
+seed: 42
+
+hsv_h: 0.015
+hsv_s: 0.7
+hsv_v: 0.4
+degrees: 10.0
+translate: 0.1
+scale: 0.5
+perspective: 0.0005
+fliplr: 0.5
+flipud: 0.0
+shear: 0.0
+mosaic: 1.0
+close_mosaic: 10
+mixup: 0.0
+copy_paste: 0.0
+erasing: 0.0
+
+val: true
+plots: true
+project: runs
+name: arch_yolo26s

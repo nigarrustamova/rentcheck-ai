@@ -1,0 +1,44 @@
+# Resolution study: main.yaml at close to CarDD's native size.
+#
+# CarDD images top out at 1000x1000, so training at 640 discards roughly 60% of the
+# pixel area. That loss falls hardest on the thin classes — a three-pixel scratch
+# becomes two pixels and disappears, while a crumpled bumper survives any downscale.
+# Since scratch is 41% of all instances, this is the resolution question that
+# actually matters for the product.
+#
+# Batch drops to 8 because 960 costs roughly 2.25x the activation memory.
+
+model: weights/yolov8s-seg.pt
+data: data/processed/cardd_seg/dataset.yaml
+task: segment
+
+imgsz: 960
+batch: 8
+epochs: 100
+device: 0
+workers: 8
+amp: true
+patience: 20
+save_period: 5
+seed: 42
+
+hsv_h: 0.015
+hsv_s: 0.7
+hsv_v: 0.4
+degrees: 10.0
+translate: 0.1
+scale: 0.5
+perspective: 0.0005
+fliplr: 0.5
+flipud: 0.0
+shear: 0.0
+mosaic: 1.0
+close_mosaic: 10
+mixup: 0.0
+copy_paste: 0.0
+erasing: 0.0
+
+val: true
+plots: true
+project: runs
+name: res960

@@ -1,0 +1,43 @@
+# Capacity study, and the row the deployment note needs.
+#
+# The medium model should score higher. The question for a Track 3 product is
+# whether it is worth roughly 2.5x the CPU inference time, since the demo runs on
+# CPU and the paper has to report measured latency. Pair this row with the timing
+# table rather than reading its mAP alone.
+#
+# Batch drops to 8: yolov8m-seg at 640/batch16 does not fit the 10-12 GB envelope.
+
+model: weights/yolov8m-seg.pt
+data: data/processed/cardd_seg/dataset.yaml
+task: segment
+
+imgsz: 640
+batch: 8
+epochs: 100
+device: 0
+workers: 8
+amp: true
+patience: 20
+save_period: 5
+seed: 42
+
+hsv_h: 0.015
+hsv_s: 0.7
+hsv_v: 0.4
+degrees: 10.0
+translate: 0.1
+scale: 0.5
+perspective: 0.0005
+fliplr: 0.5
+flipud: 0.0
+shear: 0.0
+mosaic: 1.0
+close_mosaic: 10
+mixup: 0.0
+copy_paste: 0.0
+erasing: 0.0
+
+val: true
+plots: true
+project: runs
+name: size_yolov8m

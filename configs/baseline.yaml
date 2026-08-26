@@ -1,12 +1,23 @@
-# Baseline: the same architecture, trained from random initialisation.
+# Step 0 of the ladder — the floor. Random initialisation, no augmentation.
 #
-# The only difference from main.yaml is the absence of pretrained weights, so the
-# gap between the two measures exactly one thing — what the COCO backbone is worth
-# on this dataset. The course brief advises building on pretrained models; this run
-# is how we show that advice holds, with our own numbers rather than an assertion.
+# This is the mandatory baseline: the same architecture trained with none of the
+# things we later argue for. Every improvement in the results table is measured
+# against this row, so it has to be genuinely bare rather than a slightly weaker
+# version of the final recipe.
 #
-# Note the architecture is given as a .yaml, not a .pt: a .pt would load the
-# pretrained weights we are deliberately doing without.
+# The ladder, each step adding exactly one thing to the one before it:
+#
+#   step 0  baseline.yaml         random init, no augmentation, 640
+#   step 1  ablation_noaug.yaml   + pretrained weights
+#   step 2  main.yaml             + augmentation
+#   step 3  res960.yaml           + native-resolution training
+#
+# Reading them in order gives the value of each decision separately, which is both
+# the baseline the brief requires of every track and the ablation that carries the
+# experimental-rigour marks.
+#
+# The architecture is given as a .yaml, not a .pt: a .pt would load the COCO
+# weights this row exists to do without.
 
 model: yolov8s-seg.yaml
 pretrained: false
@@ -23,20 +34,18 @@ patience: 20
 save_period: 5
 seed: 42
 
-# Identical augmentation to main.yaml — otherwise the comparison would confound
-# two changes at once.
-hsv_h: 0.015
-hsv_s: 0.7
-hsv_v: 0.4
-degrees: 10.0
-translate: 0.1
-scale: 0.5
-perspective: 0.0005
-fliplr: 0.5
+# Augmentation off — step 2 is where it gets added and measured.
+hsv_h: 0.0
+hsv_s: 0.0
+hsv_v: 0.0
+degrees: 0.0
+translate: 0.0
+scale: 0.0
+perspective: 0.0
+fliplr: 0.0
 flipud: 0.0
 shear: 0.0
-mosaic: 1.0
-close_mosaic: 10
+mosaic: 0.0
 mixup: 0.0
 copy_paste: 0.0
 erasing: 0.0
@@ -44,4 +53,4 @@ erasing: 0.0
 val: true
 plots: true
 project: runs
-name: baseline_scratch
+name: step0_baseline
